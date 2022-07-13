@@ -1,0 +1,87 @@
+<?xml version="1.0"?><!DOCTYPE pdf PUBLIC "-//big.faceless.org//report" "report-1.1.dtd">
+<pdf>
+<head>
+	<link name="NotoSans" type="font" subtype="truetype" src="${nsfont.NotoSans_Regular}" src-bold="${nsfont.NotoSans_Bold}" src-italic="${nsfont.NotoSans_Italic}" src-bolditalic="${nsfont.NotoSans_BoldItalic}" bytes="2" />
+	<#if .locale == "zh_CN">
+		<link name="NotoSansCJKsc" type="font" subtype="opentype" src="${nsfont.NotoSansCJKsc_Regular}" src-bold="${nsfont.NotoSansCJKsc_Bold}" bytes="2" />
+	<#elseif .locale == "zh_TW">
+		<link name="NotoSansCJKtc" type="font" subtype="opentype" src="${nsfont.NotoSansCJKtc_Regular}" src-bold="${nsfont.NotoSansCJKtc_Bold}" bytes="2" />
+	<#elseif .locale == "ja_JP">
+		<link name="NotoSansCJKjp" type="font" subtype="opentype" src="${nsfont.NotoSansCJKjp_Regular}" src-bold="${nsfont.NotoSansCJKjp_Bold}" bytes="2" />
+	<#elseif .locale == "ko_KR">
+		<link name="NotoSansCJKkr" type="font" subtype="opentype" src="${nsfont.NotoSansCJKkr_Regular}" src-bold="${nsfont.NotoSansCJKkr_Bold}" bytes="2" />
+	<#elseif .locale == "th_TH">
+		<link name="NotoSansThai" type="font" subtype="opentype" src="${nsfont.NotoSansThai_Regular}" src-bold="${nsfont.NotoSansThai_Bold}" bytes="2" />
+	</#if>
+     <style type="text/css">table { font-size: 9pt; table-layout: fixed; width: 100%; }
+th { font-weight: bold; font-size: 8pt; vertical-align: middle; padding: 5px 6px 3px; background-color: #5B9BD5; color: #ffffff; padding-bottom: 10px; padding-top: 10px;}
+td { padding: 4px 6px; }
+b { font-weight: bold; color: #333333; }
+</style>
+</head>
+<body padding="0.5in 0.5in 0.5in 0.5in" size="Letter-LANDSCAPE">
+    <div style="display: flex; flex-direction: row; justify-content: space-between;">
+<div style="display: flex; flex-direction: column;">
+<p style="display: flex; flex-direction: column;">&nbsp;</p>
+</div>
+</div>
+  
+  <#assign rowCount = 0>
+<#assign transCount = 0>
+<#assign transSuccessRate = 0>
+<#assign editsCount = 0>
+<#assign editsOnTrack = 0>
+<#list results as result> <#assign collab = result.custitem35>
+<#assign rowCount++>
+  <#if result.custitem51?upper_case == "SUCCESS">
+  <#assign transCount++>
+</#if> 
+    <#if result.custitem51?upper_case == "ON TRACK">
+  <#assign editsCount++>
+</#if> 
+</#list>
+ <#if editsCount gt 0 && rowCount gt 0>
+   <#assign transSuccessRate = (transCount/rowCount)*100>
+<#else>
+  <#assign transSuccessRate = 0>
+</#if>     
+
+ <#if editsCount gt 0 && rowCount gt 0>
+   <#assign editsOnTrack = (editsCount/rowCount)*100>  
+<#else>
+  <#assign editsOnTrack = 0>
+</#if> 
+
+  
+<table border="0" cellpadding="1" cellspacing="1" style="width:100%;"><tr>
+	<td style="width: 133px; text-align: center;"><img height="70" src="${companyInformation.logoUrl}" style="float: left; margin: 7px;" width="80" /></td>
+	<td style="width: 247px;text-align: right;"><br /><br /><span style="font-size:14px; margin-top:15px;"><b><span style="font-family:Arial,Helvetica,sans-serif;">Gene Trait Conversion Report</span></b> </span>
+	<p style="display: flex; flex-direction: column; text-align: left; font-size:12px;"><span style="font-size:14px; margin-top:15px;"><span style="font-family:Arial,Helvetica,sans-serif;">Report Created For: ${collab}</span><br /><span style="font-family:Arial,Helvetica,sans-serif;">${.now?date}</span></span></p>
+	<span style="font-size:14px; margin-top:15px;"> </span></td>
+	<td>&nbsp;</td>
+	<td colspan="4" style="text-align: right;"><br /><br /><br /><br /><span><span style="font-family:Arial,Helvetica,sans-serif; font-size:12px;">GM Traits on Track: ${transSuccessRate?string("0.##")}%</span></span><br /><span style="font-family:Arial,Helvetica,sans-serif;font-size:12px;">Number of GM Traits: ${editsOnTrack?string("0.##")}%</span><br />&nbsp;</td>
+	<td>&nbsp;</td>
+	</tr></table>  
+  
+    <table><#list results as result><#if result_index == 0>
+<thead>
+	<tr style="font-family:Arial,Helvetica,sans-serif; font-size:13px;">
+	<th style="width: 247px; height: 40px; vertical-align: top; color:#ffffff;text-align: left;">Company Inbred</th>
+	<th style="width: 147px; height: 40px; vertical-align: top; color:#ffffff;">GM Trait</th>
+	<th style="height: 40px; vertical-align: top; color:#ffffff;">${result.custitem49@label}</th>
+	<th style="height: 40px; vertical-align: top; color:#ffffff;"><span style=" text-align: left;">GM Trait Completion</span></th>
+	<th style="width: 80px; height: 40px; vertical-align: top; color:#ffffff;">${result.custitem51@label}</th>
+	<th style="width: 247px; height: 40px; vertical-align: top; color:#ffffff;">${result.custitem52@label}</th>
+	</tr>
+</thead>
+</#if><tr style="background-color: ${((result_index % 2)==0)?string('#DEEAF6', '#ffffff')};">
+	<td style="border-width: thin; border-color: #9CC2E5;"><span style="font-size:12px;"><span style="font-family:Arial,Helvetica,sans-serif;">${result.internalId}</span></span></td>
+	<td style="border-width: thin; border-color: #9CC2E5;"><span style="font-size:12px;"><span style="font-family:Arial,Helvetica,sans-serif;">${result.itemid}</span></span></td>
+	<td style="border-width: thin; border-color: #9CC2E5;"><span style="font-size:12px;"><span style="font-family:Arial,Helvetica,sans-serif;">${result.custitem49}</span></span></td>
+	<td style="border-width: thin; border-color: #9CC2E5;"><span style="font-size:12px;"><span style="font-family:Arial,Helvetica,sans-serif;">${result.custitem50}</span></span></td>
+	<td style="border-width: thin; border-color: #9CC2E5;"><span style="font-size:12px;"><span style="font-family:Arial,Helvetica,sans-serif;">${result.custitem51}</span></span></td>
+	<td style="border-width: thin; border-color: #9CC2E5;"><span style="font-size:12px;"><span style="font-family:Arial,Helvetica,sans-serif;">${result.custitem52}</span></span></td>
+	</tr>
+	</#list></table>
+</body>
+</pdf>
